@@ -29,26 +29,53 @@ export default function LoginForm() {
   });
 
   // Simulating an API call (e.g., 2 seconds wait)
+  // const onSubmit = async (data: LoginFormInputs) => {
+  //   try {
+  //     const { email, password } = data;
+
+  //     console.log(email, password , "email, password");
+      
+
+  //     const { error } = await supabase.auth.signInWithPassword({
+  //       email,
+  //       password,
+  //     });
+
+      
+  //     if (error) {
+  //       throw error;
+  //     }
+  //     console.log("User logged in succesfully");
+
+  //     reset();
+  //     router.push("/dashboard");
+  //   } catch (error: any) {
+  //     console.error("Login error: ", error.message);
+  //     alert(error.message);
+  //   }
+  // };
+
   const onSubmit = async (data: LoginFormInputs) => {
-    try {
-      const { email, password } = data;
+  try {
+    const { data: authData, error } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    });
 
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) {
-        throw error;
-      }
-      console.log("User logged in succesfully");
+    if (error) throw error;
 
-      reset();
-      router.push("/dashboard");
-    } catch (error: any) {
-      console.error("Login error: ", error.message);
-      alert(error.message);
+    // Check if session actually exists
+    if (!authData.session) {
+      throw new Error("No session returned. Check if email is confirmed.");
     }
-  };
+
+    reset();
+    router.push("/dashboard");
+  } catch (error: any) {
+    console.error("Login error:", error.message);
+    alert(`Login failed: ${error.message}`);
+  }
+};
 
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
@@ -57,6 +84,7 @@ export default function LoginForm() {
         redirectTo: `${location.origin}/auth/callback`,
       },
     });
+
 
     if (error) {
       console.error("Google OAuth error:", error.message);
