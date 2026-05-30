@@ -68,11 +68,6 @@ export default function LoginForm() {
       <div className="flex w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-slate-900/5 h-[600px]">
         {/* Left Panel - Image */}
         <div className="w-3/5 relative hidden lg:block">
-          {/* <Image
-        src="https://i.pinimg.com/1200x/fb/11/ab/fb11ab467790861dea01e73c62f8bc46.jpg"
-       
-      /> */}
-
           <img src="https://i.pinimg.com/1200x/65/a2/3b/65a23bd9fb01161c9417960efa315172.jpg"
                alt="Abstract workspace"
                className="object-cover"
